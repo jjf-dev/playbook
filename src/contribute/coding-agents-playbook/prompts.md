@@ -1,1 +1,0 @@
-# Writing Effective Prompts

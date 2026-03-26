@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - The Asterinas Book</title>
+        <title>Agent Guidelines Group A - The Asterinas Book</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "navy";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d39bbda7.js";
+            window.path_to_searchindex_js = "../searchindex-5ea9bbab.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-12c982b3.js"></script>
+        <script src="../toc-0b4757ba.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -174,113 +174,39 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="asterinas-kernel"><a class="header" href="#asterinas-kernel">Asterinas Kernel</a></h1>
-<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>Asterinas is a <em>secure</em>, <em>fast</em>, and <em>general-purpose</em> OS kernel
-that provides an <em>Linux-compatible</em> ABI.
-It can serve as a seamless replacement for Linux
-while enhancing <em>memory safety</em> and <em>developer friendliness</em>.</p>
+                        <h1 id="coding-agents"><a class="header" href="#coding-agents">Coding Agents</a></h1>
+<p>This section describes how to use coding agents
+in Asterinas contribution workflows.
+Agents can accelerate implementation, investigation,
+testing, and review,
+but they must operate inside a disciplined engineering process.</p>
+<p>The goal is not to maximize agent autonomy.
+The goal is to make delivery more reliable:
+clearer task boundaries,
+better intermediate artifacts,
+stronger verification,
+and lower review cost.</p>
+<p>The material is organized into the following pages:</p>
 <ul>
-<li>
-<p>Asterinas prioritizes memory safety
-by employing Rust as its sole programming language
-and limiting the use of <em>unsafe Rust</em>
-to a clearly defined and minimal Trusted Computing Base (TCB).
-This innovative approach,
-known as <a href="the-framekernel-architecture.html">the framekernel architecture</a>,
-establishes Asterinas as a more secure and dependable kernel option.</p>
-</li>
-<li>
-<p>Asterinas surpasses Linux in terms of developer friendliness.
-It empowers kernel developers to
-(1) utilize the more productive Rust programming language,
-(2) leverage a purpose-built toolkit called <a href="">OSDK</a> to streamline their workflows,
-and (3) choose between releasing their kernel modules as open source
-or keeping them proprietary,
-thanks to the flexibility offered by <a href="../">MPL</a>.</p>
-</li>
+<li><a href="operating-principles.html">Operating Principles</a> —
+the engineering model for using agents in Asterinas.</li>
+<li><a href="skills.html">Skills</a> —
+guidance for packaging reusable agent workflows into stable skills.</li>
+<li><a href="task-fit.html">Task Fit</a> —
+what coding agents are good at,
+where they are weak,
+and where trust should be reduced.</li>
 </ul>
-<p>While the journey towards a production-grade OS kernel can be challenging,
-we are steadfastly progressing towards our goal.</p>
-<h2 id="supported-cpu-architectures"><a class="header" href="#supported-cpu-architectures">Supported CPU Architectures</a></h2>
-<p>Asterinas targets modern, 64-bit platforms only.</p>
-<p>A <strong>development platform</strong> is where you build and test Asterinas
-(i.e., the host machine running the Docker-based development environment).</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Development Platform</th></tr>
-</thead>
-<tbody>
-<tr><td>x86-64</td></tr>
-</tbody>
-</table>
-</div>
-<p>A <strong>deployment platform</strong> is a CPU architecture
-that Asterinas can run on as an OS kernel.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Deployment Platform</th><th>Tier</th></tr>
-</thead>
-<tbody>
-<tr><td>x86-64</td><td>Tier 1</td></tr>
-<tr><td>x86-64 (Intel TDX)</td><td>Tier 2</td></tr>
-<tr><td>RISC-V 64</td><td>Tier 2</td></tr>
-<tr><td>LoongArch 64</td><td>Tier 3</td></tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><strong>Tier 1:</strong> Fully supported and tested.
-CI runs the full test suite on every PR.</li>
-<li><strong>Tier 2:</strong> Actively developed with basic functionality working.
-CI runs build checks and basic tests on a regular basis
-(per PR for RISC-V and nightly for Intel TDX),
-but the full test suite is not yet covered.</li>
-<li><strong>Tier 3:</strong> Early-stage or experimental.
-The kernel can boot and perform basic operations,
-but CI coverage is limited and
-may not include automated runtime tests for every pull request.</li>
-</ul>
-<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
-<p>Get yourself an x86-64 Linux machine with Docker installed.
-Follow the three simple steps below to get Asterinas up and running.</p>
-<!-- REMINDER: Be careful when editing the first two steps
-since `distro/README.md` references them -->
-<ol>
-<li>
-<p>Download the latest source code.</p>
-<pre><code class="language-bash">git clone https://github.com/asterinas/asterinas
-</code></pre>
-</li>
-<li>
-<p>Run a Docker container as the development environment.</p>
-<pre><code class="language-bash">docker run -it --privileged \
-            --network=host \
-            -v /dev:/dev \
-            -v $(pwd)/asterinas:/root/asterinas \
-            asterinas/asterinas:0.17.1-20260317
-</code></pre>
-</li>
-<li>
-<p>Inside the container, go to the project folder to build and run Asterinas.</p>
-<pre><code class="language-bash">make kernel
-make run_kernel
-</code></pre>
-</li>
-</ol>
-<p>If everything goes well, Asterinas is now up and running inside a VM.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../distro/popular-applications/containerization.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../to-contribute/version-bump.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../kernel/advanced-instructions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../playbook_B/agent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -290,11 +216,11 @@ make run_kernel
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../distro/popular-applications/containerization.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../to-contribute/version-bump.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../kernel/advanced-instructions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../playbook_B/agent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

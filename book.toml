@@ -1,0 +1,11 @@
+[book]
+title = "The Asterinas Book"
+authors = ["The Asterinas Team"]
+language = "en"
+src = "src"
+
+[output.html]
+default-theme = "navy"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/asterinas/asterinas"
+edit-url-template = "https://github.com/asterinas/asterinas/edit/main/book/{path}"

@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "navy";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5ea9bbab.js";
+            window.path_to_searchindex_js = "searchindex-930352e1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0b4757ba.js"></script>
+        <script src="toc-76d62a99.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -7415,15 +7415,341 @@ stronger verification,
 and lower review cost.</p>
 <p>The material is organized into the following pages:</p>
 <ul>
-<li><a href="playbook_A/operating-principles.html">Operating Principles</a> —
+<li><a href="#operating-principles">Operating Principles</a> —
 the engineering model for using agents in Asterinas.</li>
-<li><a href="playbook_A/skills.html">Skills</a> —
+<li><a href="#skills">Skills</a> —
 guidance for packaging reusable agent workflows into stable skills.</li>
-<li><a href="playbook_A/task-fit.html">Task Fit</a> —
+<li><a href="#task-fit">Task Fit</a> —
 what coding agents are good at,
 where they are weak,
 and where trust should be reduced.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="operating-principles"><a class="header" href="#operating-principles">Operating Principles</a></h1>
+<p>Coding agents should be treated
+as components of the engineering system,
+not as autonomous replacements for engineering judgment.
+In Asterinas,
+they work best when people define the goal,
+scope, and acceptance criteria,
+while agents execute narrow tasks
+and produce reviewable artifacts.</p>
+<h2 id="deliver-small-verifiable-increments"><a class="header" href="#deliver-small-verifiable-increments">Deliver Small, Verifiable Increments</a></h2>
+<p>Large end-to-end requests are usually less reliable
+than short, bounded steps.
+Each step should produce something that can be checked directly,
+such as:</p>
+<ul>
+<li>a code change;</li>
+<li>a test result;</li>
+<li>a log bundle;</li>
+<li>a design note;</li>
+<li>a structured review report.</li>
+</ul>
+<p>Every step should also have a clear exit condition.
+Do not move to the next phase
+while the current phase still fails
+its acceptance criteria.</p>
+<h2 id="prefer-specification-driven-work-for-high-risk-tasks"><a class="header" href="#prefer-specification-driven-work-for-high-risk-tasks">Prefer Specification-Driven Work for High-Risk Tasks</a></h2>
+<p>For system tasks such as syscall behavior and
+module implementation,
+a conversational prompt alone is usually not enough.</p>
+<p>A more reliable sequence is:</p>
+<ol>
+<li>Clarify the problem and collect references.</li>
+<li>Write a short task brief or product requirement document.</li>
+<li>Write a technical specification for behavior,
+invariants, and forbidden changes when the task is high risk.</li>
+<li>Ask the agent to implement within that contract.</li>
+</ol>
+<p>This shifts the question from
+“Did the model understand the task correctly?”
+to
+“Did the implementation satisfy a checkable contract?”</p>
+<h2 id="prefer-evidence-over-impression"><a class="header" href="#prefer-evidence-over-impression">Prefer Evidence Over Impression</a></h2>
+<p>In Asterinas development,
+unsupported conclusions are dangerous.
+High-risk claims should be backed by evidence such as:</p>
+<ul>
+<li>Linux references;</li>
+<li>code anchors;</li>
+<li>logs or traces;</li>
+<li>focused tests;</li>
+<li>structured review findings.</li>
+</ul>
+<p>A useful sequence is:
+collect evidence,
+form hypotheses,
+run targeted validation,
+then write a report.</p>
+<h2 id="use-linux-as-a-semantic-reference"><a class="header" href="#use-linux-as-a-semantic-reference">Use Linux as a Semantic Reference</a></h2>
+<p>Linux is often the main reference
+for user-visible behavior,
+error codes,
+boundary cases,
+and subsystem responsibilities.
+However,
+Linux should <strong>not</strong> be treated
+as a line-by-line implementation template.</p>
+<p>Contributors should align with Linux semantics
+where compatibility matters,
+while keeping Asterinas-specific constraints and abstractions intact.
+When documenting conclusions,
+it is helpful to distinguish between:</p>
+<ul>
+<li>a direct match with Linux behavior;</li>
+<li>a behavioral match through a different implementation;</li>
+<li>an inference that still requires confirmation.</li>
+</ul>
+<h2 id="manage-context-actively"><a class="header" href="#manage-context-actively">Manage Context Actively</a></h2>
+<p>Long-running agent sessions drift unless critical state
+is written to durable artifacts.
+Do not keep important decisions
+only inside a chat transcript.</p>
+<p>Prefer reducing context pressure
+instead of continually extending the same session.
+Practical techniques include:</p>
+<ul>
+<li>splitting independent subtasks across sub-agents;</li>
+<li>restoring work from compact artifacts
+such as <code>AGENTS.md</code>,
+<code>prd.md</code>,
+specifications,
+findings,
+and round summaries;</li>
+<li>maintaining a lightweight index
+of key files,
+code anchors,
+logs,
+commands,
+and open questions.</li>
+</ul>
+<p>Persist the following information early:</p>
+<ul>
+<li>project-wide rules in <code>AGENTS.md</code>;</li>
+<li>task goals and acceptance criteria;</li>
+<li>specifications for risky changes;</li>
+<li>review findings and round summaries;</li>
+<li>long-running progress trackers for multi-session work.</li>
+</ul>
+<p>When the session becomes noisy or inconsistent,
+start a new session from those artifacts
+instead of patching an increasingly unreliable context.
+Prefer summaries and indexes
+over copying the raw transcript forward.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="skills"><a class="header" href="#skills">Skills</a></h1>
+<p>Many agent workflows are not one-off prompts.
+They recur across tasks:
+reviewing a change,
+validating behavior against Linux,
+analyzing failures,
+drafting tests,
+or checking architectural boundaries.
+When a workflow becomes repeatable,
+it is often worth packaging it as a skill.</p>
+<p>A skill is useful
+when the task has stable inputs,
+a recognizable decision pattern,
+and a reviewable output format.
+It is less useful
+when the task is still exploratory
+or depends mainly on human judgment.</p>
+<h2 id="turn-repeated-workflows-into-skills"><a class="header" href="#turn-repeated-workflows-into-skills">Turn Repeated Workflows into Skills</a></h2>
+<p>The best candidates for skills
+are workflows that appear often
+and already follow a fixed structure.
+Examples include:</p>
+<ul>
+<li>change review;</li>
+<li>contract or semantic validation;</li>
+<li>log and failure analysis;</li>
+<li>test drafting and test-gap inspection;</li>
+<li>architecture audits;</li>
+<li>report generation from structured evidence.</li>
+</ul>
+<p>These tasks benefit from skills
+because consistency matters
+more than improvisation.</p>
+<h2 id="put-the-fixed-workflow-in-code-not-in-the-prompt"><a class="header" href="#put-the-fixed-workflow-in-code-not-in-the-prompt">Put the Fixed Workflow in Code, Not in the Prompt</a></h2>
+<p>One recurring lesson is that
+stable workflow steps should be scripted
+instead of being left to the model each time.
+Input normalization,
+task classification,
+report initialization,
+test selection,
+and result rendering
+should be automated whenever possible.</p>
+<p>This reduces randomness,
+lowers context load,
+and makes the skill easier to reuse across sessions.</p>
+<h2 id="keep-skill-scope-narrow"><a class="header" href="#keep-skill-scope-narrow">Keep Skill Scope Narrow</a></h2>
+<p>A skill should solve one kind of problem well.
+It should not try to plan,
+implement,
+verify,
+and approve a large task all at once.</p>
+<p>Narrow skills are easier to trust,
+easier to compose,
+and easier to debug.
+They also make delegation cleaner:
+one skill can own one review unit,
+one contract class,
+or one kind of artifact.</p>
+<h2 id="standardize-inputs-and-outputs"><a class="header" href="#standardize-inputs-and-outputs">Standardize Inputs and Outputs</a></h2>
+<p>Skills become much more reliable
+when they consume structured inputs
+and produce structured outputs.
+Useful inputs often include:</p>
+<ul>
+<li>explicit scope and non-goals;</li>
+<li>code anchors or changed files;</li>
+<li>a contract or specification;</li>
+<li>execution environment and command baseline;</li>
+<li>logs,
+traces,
+or reference behavior.</li>
+</ul>
+<p>Useful outputs often include:</p>
+<ul>
+<li>a fixed report schema;</li>
+<li>findings with severity;</li>
+<li>evidence IDs and code anchors;</li>
+<li>confidence statements;</li>
+<li>recommended next actions.</li>
+</ul>
+<p>This makes the result easier
+for both humans and later agents to review.</p>
+<h2 id="use-specialized-skills-to-protect-architecture"><a class="header" href="#use-specialized-skills-to-protect-architecture">Use Specialized Skills to Protect Architecture</a></h2>
+<p>Several lessons show the same failure mode:
+an agent can make a test pass
+while quietly damaging abstraction boundaries.
+This is why specialized review skills are valuable,
+especially for architecture-sensitive work.</p>
+<p>A dedicated audit skill can enforce checks such as:</p>
+<ul>
+<li>generic layers must not depend on concrete implementations;</li>
+<li>patch-style special cases should be rejected;</li>
+<li>compatibility claims should be backed by evidence;</li>
+<li>structural complexity should not grow without justification.</li>
+</ul>
+<h2 id="design-skills-for-multi-agent-collaboration"><a class="header" href="#design-skills-for-multi-agent-collaboration">Design Skills for Multi-Agent Collaboration</a></h2>
+<p>Skills work best
+when responsibility boundaries are explicit.
+An orchestration skill,
+an implementation skill,
+and a review skill
+usually serve different purposes.
+They should not overwrite one another’s responsibilities.</p>
+<p>In parallel execution,
+skills should have non-overlapping write scopes
+or clearly separated output artifacts.
+Otherwise,
+parallelism creates conflicts
+instead of speed.</p>
+<h2 id="make-skills-friendly-to-context-recovery"><a class="header" href="#make-skills-friendly-to-context-recovery">Make Skills Friendly to Context Recovery</a></h2>
+<p>Long tasks often span multiple sessions.
+A good skill should therefore leave behind
+artifacts that make recovery easy:</p>
+<ul>
+<li>summaries;</li>
+<li>structured findings;</li>
+<li>task trackers;</li>
+<li>reusable logs;</li>
+<li>references to commands and evidence.</li>
+</ul>
+<p>The more a workflow depends on
+remembering a long conversation,
+the less suitable it is as a reusable skill.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="task-fit"><a class="header" href="#task-fit">Task Fit</a></h1>
+<p>Coding agents are useful,
+but their value depends heavily
+on the type of task.
+The lessons collected in this project
+point to a consistent pattern:
+models are most reliable
+when the work is structured,
+bounded,
+and easy to verify.
+They are less reliable
+when the task is open-ended,
+architecture-heavy,
+or depends on subtle dynamic behavior.</p>
+<h2 id="what-models-are-good-at"><a class="header" href="#what-models-are-good-at">What Models Are Good At</a></h2>
+<p>Current models are usually strong at:</p>
+<ul>
+<li>review,
+validation,
+comparison,
+and summarization;</li>
+<li>structured investigation,
+such as log analysis or root-cause narrowing;</li>
+<li>deterministic or rule-driven code generation;</li>
+<li>drafting tests from a clear contract;</li>
+<li>producing structured reports from evidence.</li>
+</ul>
+<p>These tasks work well
+because the model can operate
+against a known reference,
+an explicit contract,
+or a checkable output format.</p>
+<h2 id="what-models-are-weaker-at"><a class="header" href="#what-models-are-weaker-at">What Models Are Weaker At</a></h2>
+<p>Current models are less reliable at:</p>
+<ul>
+<li>architecture decisions and tradeoff selection;</li>
+<li>generating a complete solution
+from a vague problem statement;</li>
+<li>complex state-transition logic;</li>
+<li>cross-subsystem coordination
+with many hidden dependencies;</li>
+<li>concurrency bugs,
+races,
+and lock-order reasoning without strong evidence;</li>
+<li>long iterative sessions
+after context quality has degraded.</li>
+</ul>
+<p>These tasks require either
+deeper domain judgment,
+better global consistency,
+or stronger runtime evidence
+than the model usually has by default.</p>
+<h2 id="recommended-uses"><a class="header" href="#recommended-uses">Recommended Uses</a></h2>
+<p>In practice,
+coding agents are especially useful for:</p>
+<ul>
+<li>research and reference gathering;</li>
+<li>problem decomposition;</li>
+<li>contract-driven implementation of narrow modules;</li>
+<li>test drafting and test-gap discovery;</li>
+<li>architecture or compliance checks;</li>
+<li>diff review and regression hunting;</li>
+<li>documentation and report cleanup.</li>
+</ul>
+<p>They are often most effective
+when paired with a human-led plan
+or a written specification.</p>
+<h2 id="tasks-that-need-lower-trust"><a class="header" href="#tasks-that-need-lower-trust">Tasks That Need Lower Trust</a></h2>
+<p>Trust should be reduced
+when the task has one or more of these properties:</p>
+<ul>
+<li>the scope is still vague;</li>
+<li>the task crosses multiple subsystems;</li>
+<li>the design tradeoff is still unsettled;</li>
+<li>the logic depends on subtle state interactions;</li>
+<li>correctness depends on concurrency behavior;</li>
+<li>the patch only proves itself
+by satisfying one test or one demo;</li>
+<li>the model is making claims
+without code anchors,
+logs,
+or external references.</li>
+</ul>
+<p>In those situations,
+model output should be treated
+as a draft or hypothesis,
+not as a conclusion.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="lessons-learned-from-using-coding-agents"><a class="header" href="#lessons-learned-from-using-coding-agents">Lessons Learned from Using Coding Agents</a></h1>
 <h2 id="general-configuration-tips"><a class="header" href="#general-configuration-tips">General Configuration Tips</a></h2>

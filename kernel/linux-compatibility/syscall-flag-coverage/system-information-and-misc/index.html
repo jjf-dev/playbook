@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Agent Guidelines - The Asterinas Book</title>
+        <title>System information &amp; misc - The Asterinas Book</title>
 
 
         <!-- Custom HTML head -->
@@ -12,33 +12,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-9dfbd86b.css">
-        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../../../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../../../css/general-2459343d.css">
+        <link rel="stylesheet" href="../../../../css/chrome-9dfbd86b.css">
+        <link rel="stylesheet" href="../../../../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../../../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../../../";
             const default_light_theme = "navy";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d39bbda7.js";
+            window.path_to_searchindex_js = "../../../../searchindex-930352e1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-12c982b3.js"></script>
+        <script src="../../../../toc-76d62a99.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -105,7 +105,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../../../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -140,7 +140,7 @@
                     <h1 class="menu-title">The Asterinas Book</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
@@ -174,58 +174,139 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="lessons-learned-from-using-coding-agents"><a class="header" href="#lessons-learned-from-using-coding-agents">Lessons Learned from Using Coding Agents</a></h1>
-<h2 id="general-configuration-tips"><a class="header" href="#general-configuration-tips">General Configuration Tips</a></h2>
+                        <h1 id="system-information--misc"><a class="header" href="#system-information--misc">System Information &amp; Misc.</a></h1>
+<!--
+Put system calls such as
+uname, getrlimit, reboot, setrlimit, sysinfo, times, gettimeofday, clock_gettime,
+clock_settime, getrusage, getdents, getdents64, personality, syslog,
+arch_prctl, set_tid_address, and getrandom
+under this category.
+-->
+<h3 id="arch_prctl"><a class="header" href="#arch_prctl"><code>arch_prctl</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">// Get or set the FS register
+arch_prctl(
+    code = ARCH_GET_FS | ARCH_SET_FS,
+    addr
+);
+</code></pre>
+<p>Unsupported codes:</p>
 <ul>
-<li><strong>Grant full permissions inside containers.</strong> When running inside a container, it is safe to grant the agent full permissions by default. This can be done either at startup via a command-line flag or afterward using <code>/permission</code>.</li>
-<li><strong>Protect files you care about.</strong> Avoid leaving files you care about in directories accessible to the agent, or back them up beforehand — the agent may delete them.</li>
-<li><strong>Persist TODO lists to files.</strong> TODO lists maintained in conversation context are unreliable; always persist them to a file.</li>
-<li><strong>Instruct the agent to iterate until completion.</strong> To keep the agent working until a task is fully complete, explicitly instruct it to “keep iterating until the task is done.”</li>
-<li><strong>Use orchestration tools for continuous operation.</strong> Tools such as the <a href="https://github.com/mikeyobrien/ralph-orchestrator">Ralph Orchestrator</a> can be used to keep the agent running continuously in a loop.</li>
+<li><code>ARCH_GET_CPUID</code> and <code>ARCH_SET_CPUID</code></li>
+<li><code>ARCH_GET_GS</code> and <code>ARCH_SET_GS</code></li>
 </ul>
-<hr>
-<h2 id="code-generation"><a class="header" href="#code-generation">Code Generation</a></h2>
-<h3 id="task-decomposition-and-planning"><a class="header" href="#task-decomposition-and-planning">Task Decomposition and Planning</a></h3>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/arch_prctl.2.html">the man page</a>.</p>
+<h3 id="getrusage"><a class="header" href="#getrusage"><code>getrusage</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">// Return resource usage statistics for the calling process
+getrusage(
+    who = RUSAGE_SELF,
+    usage
+);
+
+// Return resource usage statistics for the calling thread
+getrusage(
+    who = RUSAGE_THREAD,
+    usage
+);
+</code></pre>
+<p>Unsupported <code>who</code> flags:</p>
 <ul>
-<li><strong>Scope tasks tightly.</strong> Break tasks into well-scoped units. The sweet spot for agent delegation is not “the entire project” but rather “a single task with clear boundaries.” Overly large tasks tend to cause the agent to lose focus.</li>
-<li><strong>Provide context before coding; review after.</strong> Before asking the agent to write code, provide a design document along with the current state of the implementation. After the implementation is complete, conduct a retrospective. A <code>plan.md</code> should exist before coding begins, and a summary and review should follow. For critical modules, a dedicated design document is recommended.</li>
-<li><strong>Anchor designs with concrete artifacts.</strong> Natural language design documents tend to be imprecise and can be difficult to review. Adding pseudocode, code snippets, or API documentation helps pin down the intended behavior more concretely.</li>
-<li><strong>Review plans carefully, but keep the process concise.</strong> Plans may contain subtle internal inconsistencies that go unnoticed without careful review, which can cause the agent to deviate during implementation. That said, the plan review process itself should be kept concise.</li>
-<li><strong>Leverage agents for rapid prototyping.</strong> Agents are quite capable when it comes to rapid prototyping and proof-of-concept work. For a quick initial prototype, it may be more effective to let the agent produce a rough version and then refine it manually, rather than continuously reviewing auto-generated code and plans.</li>
-<li><strong>Use specifications and existing implementations as dual references.</strong> Use the formal specification and reference implementations (e.g., the Linux kernel source) as complementary guides: the specification defines what must be correct, while existing code reveals practical operational details.</li>
+<li><code>RUSAGE_CHILDREN</code></li>
 </ul>
-<h3 id="coding-guidelines-and-review"><a class="header" href="#coding-guidelines-and-review">Coding Guidelines and Review</a></h3>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/getrusage.2.html">the man page</a>.</p>
+<h3 id="getrandom"><a class="header" href="#getrandom"><code>getrandom</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">// Obtain random bytes
+getrandom(
+    buf, buflen,
+    flags =
+        // Optional flags:
+        //
+        // High-entropy pool
+        GRND_RANDOM
+);
+</code></pre>
+<p>Silently-ignored flags:</p>
 <ul>
-<li><strong>Walk through coding guidelines line by line.</strong> Either enforce them manually or encode them as agent skills. Passing too many guidelines at once causes the agent to lose focus. The same applies to code review: for specific concerns (e.g., correct usage of <code>Arc</code>), include an explicit prompt for each, and consider consolidating recurring review items into a checklist to be worked through systematically.</li>
-<li><strong>Do not expect agents to remember conventions.</strong> Agents are often poor at adhering to domain-specific programming conventions, and they tend to forget prior instructions. Encoding guidelines as skills and having the agent check against them one by one — while imperfect — can help mitigate this.</li>
-<li><strong>Be alert to the gap between plans and code.</strong> Agents can sound convincing when describing a plan, yet the corresponding code may still be incorrect. A plan expressed purely in natural language is also difficult to evaluate rigorously; consider requiring code-level evidence where possible.</li>
-<li><strong>Always have a human serve as the final checkpoint.</strong> Agent decisions are often not fully reliable, and human oversight remains essential before any code is merged or deployed.</li>
+<li><code>GRND_NONBLOCK</code> because the underlying operation never blocks</li>
 </ul>
-<hr>
-<h2 id="bug-debugging"><a class="header" href="#bug-debugging">Bug Debugging</a></h2>
-<h3 id="reproducing-and-validating-bugs"><a class="header" href="#reproducing-and-validating-bugs">Reproducing and Validating Bugs</a></h3>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/getrandom.2.html">the man page</a>.</p>
+<h3 id="reboot"><a class="header" href="#reboot"><code>reboot</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">reboot_magic2 = LINUX_REBOOT_MAGIC2 | LINUX_REBOOT_MAGIC2A | LINUX_REBOOT_MAGIC2B | LINUX_REBOOT_MAGIC2C;
+
+// Stop the current system
+reboot(
+    magic  = LINUX_REBOOT_MAGIC1,
+    magic2 = &lt;reboot_magic2&gt;,
+    op     = LINUX_REBOOT_CMD_HALT | LINUX_REBOOT_CMD_POWER_OFF | LINUX_REBOOT_CMD_RESTART,
+    arg
+);
+</code></pre>
+<p>Unsupported <code>op</code> flags:</p>
 <ul>
-<li><strong>Start with a plan before diving into fixes.</strong> Before starting a debugging session, ask the agent to produce a detailed debugging plan first, then proceed with execution.</li>
-<li><strong>Define the expected final state upfront.</strong> Instruct the agent to reproduce the bug automatically. Without this, you risk becoming the agent’s manual tester — waiting for a proposed fix, validating it by hand, and feeding results back — a loop that is inefficient and prevents true parallelism between developer and agent.</li>
-<li><strong>Keep both code correctness and environment stability in scope.</strong> Throughout the debugging process, the agent must keep two concerns in mind simultaneously — neglecting either will cause it to stall: (1) whether the code-level fix is correct; and (2) whether the test execution environment is stable and reliable.</li>
-<li><strong>Treat runtime errors as diagnostic signals.</strong> Runtime errors from the execution environment (e.g., QEMU) are high-value diagnostics and should be mapped back to concrete code-level checks rather than dismissed.</li>
+<li><code>LINUX_REBOOT_CMD_CAD_OFF</code></li>
+<li><code>LINUX_REBOOT_CMD_CAD_ON</code></li>
+<li><code>LINUX_REBOOT_CMD_KEXEC</code></li>
+<li><code>LINUX_REBOOT_CMD_RESTART2</code></li>
+<li><code>LINUX_REBOOT_CMD_SW_SUSPEND</code></li>
 </ul>
-<h3 id="environment-preparation"><a class="header" href="#environment-preparation">Environment Preparation</a></h3>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/reboot.2.html">the man page</a>.</p>
+<h2 id="posix-clocks"><a class="header" href="#posix-clocks">POSIX Clocks</a></h2>
+<h3 id="clock_gettime"><a class="header" href="#clock_gettime"><code>clock_gettime</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">predefined_clockid = CLOCK_REALTIME | CLOCK_MONOTONIC | CLOCK_MONOTONIC_RAW |
+                     CLOCK_REALTIME_COARSE | CLOCK_MONOTONIC_COARSE | CLOCK_BOOTTIME |
+                     CLOCK_PROCESS_CPUTIME_ID | CLOCK_THREAD_CPUTIME_ID;
+
+// Get the time of a clock specified by a static ID
+clock_gettime(clockid = &lt;predefined_clockid&gt;, tp);
+
+// Get the time of a clock specified by a dynamic ID
+clock_gettime(clockid = &lt;INTEGER&gt;, tp);
+</code></pre>
+<p>Unsupported predefined clock IDs:</p>
 <ul>
-<li><strong>Invest in the environment to speed up agent efficiency.</strong> Shift engineering effort toward preparing environments that allow the agent to iterate quickly and repeatedly, rather than focusing solely on producing individual fixes.</li>
-<li><strong>Diagnose and supply missing capabilities directly.</strong> When the agent stalls, identify which capability it is missing and provide it directly — for example, a prebuilt binary or cached build artifacts — rather than having the agent rebuild from scratch. This reduces idle time and speeds up iteration.</li>
-<li><strong>Share prior knowledge and anticipate failure modes.</strong> Proactively share relevant prior experience with the agent. For instance, when debugging a networking issue, providing a previously known workaround helped guide the agent to the root cause after many failed attempts. Similarly, if the target environment has difficulty installing compilers (e.g., slow or unreliable builds under Nix), preinstall or declare the required toolchains to prevent the agent from wasting time on expensive or impossible actions.</li>
+<li><code>CLOCK_REALTIME_ALARM</code></li>
+<li><code>CLOCK_BOOTTIME_ALARM</code></li>
+<li><code>CLOCK_TAI</code></li>
 </ul>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/clock_gettime.2.html">the man page</a>.</p>
+<h3 id="clock_nanosleep"><a class="header" href="#clock_nanosleep"><code>clock_nanosleep</code></a></h3>
+<p>Supported functionality in SCML:</p>
+<pre><code class="language-c">// Sleep with a specified clock
+clock_nanosleep(
+    clockid = CLOCK_REALTIME | CLOCK_MONOTONIC | CLOCK_BOOTTIME | CLOCK_PROCESS_CPUTIME_ID,
+    flags =
+        // Optional flags:
+        //
+        // Sleep until an absolute time point
+        TIMER_ABSTIME,
+    t, remain
+);
+</code></pre>
+<p>Unsupported clock IDs:</p>
+<ul>
+<li><code>CLOCK_TAI</code></li>
+</ul>
+<p>For more information,
+see <a href="https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html">the man page</a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../to-contribute/version-bump.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../../kernel/linux-compatibility/syscall-flag-coverage/namespaces-cgroups-and-security/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../rfcs/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../../kernel/linux-compatibility/kernel-parameters.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -235,11 +316,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../to-contribute/version-bump.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../../kernel/linux-compatibility/syscall-flag-coverage/namespaces-cgroups-and-security/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../rfcs/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../../kernel/linux-compatibility/kernel-parameters.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -259,17 +340,17 @@
         </script>
 
 
-        <script src="../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../../../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../../../mark-09e88c2c.min.js"></script>
+        <script src="../../../../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard-1626706a.min.js"></script>
-        <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../../../../clipboard-1626706a.min.js"></script>
+        <script src="../../../../highlight-abc7f01d.js"></script>
+        <script src="../../../../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../mermaid-eefea253.min.js"></script>
-        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../../../../mermaid-eefea253.min.js"></script>
+        <script src="../../../../mermaid-init-ccf746f1.js"></script>
 
 
 
